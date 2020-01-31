@@ -7,13 +7,13 @@
 
 #include "ESPAsyncWebServer.h"
 #include <WiFi.h>
-#include <WiFiClient.h>
+//#include <WiFiClient.h>
 //#include <WebServer.h>
-#include <ESPmDNS.h>
-#include <Update.h>
+//#include <ESPmDNS.h>
+//#include <Update.h>
 #include "SPIFFS.h"
 
- 
+ //todo: copy files to spiffs ? seems doesn't work
 const char* host = "esp32";
 const char* ssid = "esp_test";
 const char* password = "12345679";
@@ -23,16 +23,7 @@ const char* password = "12345679";
 AsyncWebServer server(80);
 //WebServer server(80);
  
-/*
- * Login page
- */
-//const char* loginIndex = "";
-/*
- * Server Index Page
- */
- 
-//const char* serverIndex = "";
- 
+
 /*
  * setup function
  */
@@ -52,22 +43,17 @@ void setup(void) {
   Serial.println(IP);
  
   /*use mdns for host name resolution*/
-  if (!MDNS.begin(host)) { //http://esp32.local
-    Serial.println("Error setting up MDNS responder!");
-    while (1) {
-      delay(1000);
-    }
-  }
-  Serial.println("mDNS responder started");
+//  if (!MDNS.begin(host)) { //http://esp32.local
+//    Serial.println("Error setting up MDNS responder!");
+//    while (1) {
+ //     delay(1000);
+ //   }
+ // }
+//  Serial.println("mDNS responder started");
   /*return index page which is stored in serverIndex */
 
- server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/login.html", "text/html");
-  });
+  server.serveStatic("/", SPIFFS, "/www/").setDefaultFile("login.html");;
 
-   server.on("/server.html", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/server.html", "text/html");
-  });
 
 
   /*handling uploading firmware file */
@@ -101,6 +87,20 @@ void setup(void) {
 */
   
   server.begin();
+
+   File root = SPIFFS.open("/");
+ 
+  File file = root.openNextFile();
+ 
+  while(file){
+ 
+      Serial.print("FILE: ");
+      Serial.println(file.name());
+ 
+      file = root.openNextFile();
+  }
+
+  
 }
  
 void loop(void) {

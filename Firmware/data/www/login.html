@@ -2,7 +2,9 @@
     <table width='20%' bgcolor='A09F9F' align='center'>
         <tr>
             <td colspan=2>
-                <center><font size=4><b>ESP32 Login Page</b></font></center>
+                <center>
+                    <font size=4><b>ESP32 Login Page</b></font>
+                </center>
                 <br>
             </td>
             <br>
@@ -13,7 +15,7 @@
         </tr>
         <br>
         <br>
-    <tr>
+        <tr>
             <td>Password:</td>
             <td><input type='Password' size=25 name='pwd'><br></td>
             <br>
@@ -25,15 +27,12 @@
     </table>
 </form>
 <script>
-function check(form)
-    {
-    if(form.userid.value=='admin' && form.pwd.value=='admin')
-    {
-    window.open('/server.html')
-    }
-    else
-    {
-     alert('Error Password or Username')/*displays error message*/
-    }
+    function check(form) {
+        if (form.userid.value == 'admin' && form.pwd.value == 'admin') {
+            window.open('/server.html')
+        }
+        else {
+            alert('Error Password or Username')/*displays error message*/
+        }
     }
 </script>
